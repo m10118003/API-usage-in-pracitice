@@ -25,18 +25,17 @@
             font-weight: 800;
         }
         .content {
-            width: 200px;
-            min-height: (100% - 100px);
+            width: 90%;
+            min-height: calc(100vh - 100px);
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-around;
+            align-items: flex-start;
             background-color: #FEDFE1;
             border: 4px;
             border-radius: 15px;
-            border-style: outset;
-            cursor: pointer;
-            margin: 20px;
+            border-style: outset;            
+            margin: 0 70px 0;
         }
         /* .primary-area {
             display: flex;
@@ -45,8 +44,14 @@
             align-items: center;
         } */
         .card {
-            width: 100%;
-            height: 100%;   
+            width: 450px;
+            height: 550px;
+            background-color: cornsilk;
+            border: 4px;
+            border-radius: 15px;
+            border-style: outset;
+            cursor: pointer;
+            margin-bottom: 30px;   
            
         }
         .card .img {
@@ -60,13 +65,16 @@
             width: 100%;
             height: 50%;
             background-color: crimson;
+            border: 4px;
+            border-radius: 15px;
+            border-style: outset;
             padding: 10px 20px;
             text-align: center;
         }
         .card>h1 {
             margin-left: 10px;
         }
-        #test {
+        /* #test {
             width: 200px;
             height: 100%;
             display: flex;
@@ -79,12 +87,13 @@
             border-style: outset;
             cursor: pointer;
             margin: 20px;
-        }
+        } */
     </style>
 </head>
 
 <body>
     <section class="primary-area">
+        <nav>Weather card API info</nav>
         <!-- <div class="card">
             <div class="img"></div>
             <div class="info">
@@ -121,6 +130,7 @@
                 // Data processing, let data be extracted 
             })
             .then(function (weather) {
+                // Confirm the storage of data structure of json info
                 console.log(weather.records.location[11].locationName);
                 // console.log(weather.records.location[11].weatherElement[0].time[0].parameter.parameterName);
                 // console.log(weather.records.location[11].weatherElement[2].time[0].parameter.parameterName);
@@ -128,22 +138,26 @@
                 // console.log(weather.records.location[11].weatherElement[3].time[0].parameter.parameterName);
 
                 let location = weather.records.location
-
+                // According the number of cities, makes for loop run 
                 for (let i = 0; i < location.length; i++) {
+                    // Use variables to storage the info all needs
                     let place = location[i].locationName
                     let report = location[i].weatherElement[0].time[0].parameter.parameterName
                     let hightTemp = location[i].weatherElement[4].time[0].parameter.parameterName
                     let lowTemp = location[i].weatherElement[2].time[0].parameter.parameterName
                     let feels = location[i].weatherElement[3].time[0].parameter.parameterName
-
-                    if (report <= 30) {
+                    // pic conditions
+                    // When the rain fall <= 30% => Sun rise
+                    // 30% < when the rain fall <= 60% => clouded
+                    // When rain fall > 60% => Sunrise
+                    if (location[i].weatherElement[1].time[0].parameter.parameterName <= 30) {
                         var weatherImg = 'sun.jpg'
-                    } else if (report <= 60) {
-                        var weatherImg = 'cloud.png'
+                    } else if (location[i].weatherElement[1].time[0].parameter.parameterName <= 60) {
+                        var weatherImg = 'cloud.jpg'
                     } else {
-                        var weatherImg = 'rain.jpg'
+                        var weatherImg = 'rain.png'
                     }
-
+                    // Make the weather cards output
                     content.innerHTML +=
                     `
                     <div class="card">
